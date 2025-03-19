@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marker-Based AR - Valves Model</title>
+
+    <!-- A-Frame and AR.js Libraries -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+    <a-scene 
+        embedded 
+        arjs="sourceType: webcam; detectionMode: mono; matrixCodeType: 3x3;"
+        renderer="antialias: true; colorManagement: true; physicallyCorrectLights: true;">
+        
+        <!-- Lighting for better visibility -->
+        <a-light type="directional" position="2 4 2" intensity="1.5"></a-light>
+        <a-light type="ambient" intensity="0.5"></a-light>
+
+        <!-- Marker (HIRO) -->
+        <a-marker preset="hiro">
+            <!-- 3D Model -->
+            <a-entity 
+                id="valveModel"
+                gltf-model="models/valves.glb" 
+                position="0 0 0" 
+                scale="0.5 0.5 0.5"
+                animation-mixer
+                visible="false">
+            </a-entity>
+        </a-marker>
+
+        <!-- Camera -->
+        <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+        // Ensure the model is loaded correctly
+        document.addEventListener("DOMContentLoaded", () => {
+            const model = document.querySelector("#valveModel");
+
+            model.addEventListener("model-loaded", () => {
+                console.log("GLB model loaded successfully!");
+                model.setAttribute("visible", "true"); // Ensure visibility
+            });
+
+            model.addEventListener("error", (e) => {
+                console.error("Error loading model:", e);
+            });
+        });
+    </script>
+</body>
+</html>
